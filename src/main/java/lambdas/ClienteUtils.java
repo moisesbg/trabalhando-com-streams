@@ -14,8 +14,8 @@ public class ClienteUtils {
     }
 
     public static void imprimirLista(List<Cliente> clientes) {
-        clientes.forEach(cliente -> System.out.println("Nome: "+ cliente.getNome()
-                +" - Pontos: "+ cliente.getPontos()
-                +" - Preferencial: "+cliente.isPreferencial()));
+        clientes.forEach(cliente -> System.out.println("Nome: " + cliente.getNome()
+                + " - Pontos: " + cliente.getPontos()
+                + " - Preferencial: " + cliente.isPreferencial()));
     }
 }

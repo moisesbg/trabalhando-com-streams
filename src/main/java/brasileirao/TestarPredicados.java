@@ -9,18 +9,22 @@ public class TestarPredicados {
 
         System.out.println("Existe o Bahia no brasileirão? " +
                 tabelaBrasileiraoA.stream()
-                        .anyMatch(registro -> "Bahia".equals(registro.getTime())));
+                        .map(Registro::getTime)
+                        .anyMatch("Bahia"::equals));
 
         System.out.println("Existe o Tubarão no brasileirão? " +
                 tabelaBrasileiraoA.stream()
-                        .anyMatch(registro -> "Tubarão".equals(registro.getTime())));
+                        .map(Registro::getTime)
+                        .anyMatch("Tubarão"::equals));
 
         System.out.println("Não existe o Tubarão no brasileirão? " +
                 tabelaBrasileiraoA.stream()
-                        .noneMatch(registro -> "Tubarão".equals(registro.getTime())));
+                        .map(Registro::getTime)
+                        .noneMatch("Tubarão"::equals));
 
-        System.out.println("Todos os times ganharam aos menos uma partida no brasileirão? "+
-                tabelaBrasileiraoA.stream().allMatch(registro -> registro.getVitorias() > 0));
+        System.out.println("Todos os times ganharam aos menos uma partida no brasileirão? " +
+                tabelaBrasileiraoA.stream()
+                        .allMatch(registro -> registro.getVitorias() > 0));
 
     }
 }

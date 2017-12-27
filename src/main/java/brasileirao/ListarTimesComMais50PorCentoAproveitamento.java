@@ -13,9 +13,9 @@ public class ListarTimesComMais50PorCentoAproveitamento {
 
         tabelaBrasileiraoA.stream()
                 .filter(registro -> registro.getPontos() >= 57)
-                .forEach(registro -> System.out.println("Time: "+registro.getTime()+ " - Pontos: "+registro.getPontos()));
+                .forEach(registro -> System.out.println("Time: " + registro.getTime() + " - Pontos: " + registro.getPontos()));
 
         System.out.println("------ imprimir tabela original ----------");
-        tabelaBrasileiraoA.forEach(registro -> System.out.println("Time: "+registro.getTime()+ " - Pontos: "+registro.getPontos()));
+        tabelaBrasileiraoA.forEach(registro -> System.out.println("Time: " + registro.getTime() + " - Pontos: " + registro.getPontos()));
     }
 }

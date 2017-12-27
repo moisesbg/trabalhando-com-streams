@@ -7,11 +7,11 @@ public class TesteLambda {
         List<Cliente> clientes = ClienteUtils.gerarLista();
 
         /*Como era iterar a lista no Java 7 */
-        for (Cliente cliente: clientes) {
-            System.out.println("Nome: "+cliente.getNome()+" - Pontos: "+cliente.getPontos());
+        for (Cliente cliente : clientes) {
+            System.out.println("Nome: " + cliente.getNome() + " - Pontos: " + cliente.getPontos());
         }
 
         /*Como é iterar a lista com lambda */
-        clientes.forEach(cliente -> System.out.println(cliente.getNome()+" - Pontos: "+cliente.getPontos()));
+        clientes.forEach(cliente -> System.out.println(cliente.getNome() + " - Pontos: " + cliente.getPontos()));
     }
 }

@@ -2,7 +2,6 @@ package brasileirao;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MarcarTimesNaLibertadores {
     public static final int QTD_TIMES_LIBERTADORES = 8;
@@ -12,34 +11,34 @@ public class MarcarTimesNaLibertadores {
         List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();
 
         System.out.println("--- impressão tabela original -----");
-        tabelaBrasileiraoA.forEach(registro -> System.out.println("Time: "+registro.getTime()
-                + " - Pontos: "+registro.getPontos()+" - Libertadores: "+registro.isLibertadores()));
+        tabelaBrasileiraoA.forEach(registro -> System.out.println("Time: " + registro.getTime()
+                + " - Pontos: " + registro.getPontos() + " - Libertadores: " + registro.isLibertadores()));
 
         tabelaBrasileiraoA
                 .sort(Comparator.comparingInt(Registro::getPontos).reversed());
 
         tabelaBrasileiraoA
-                .subList(0,8)
+                .subList(0, 8)
                 .forEach(registro -> registro.setLibertadores(true));
 
         System.out.println("--- impressão tabela alterada -----");
-        tabelaBrasileiraoA.forEach(registro -> System.out.println("Time: "+registro.getTime()
-                + " - Pontos: "+registro.getPontos()+" - Libertadores: "+registro.isLibertadores()));
-
+        tabelaBrasileiraoA.forEach(registro -> System.out.println("Time: " + registro.getTime()
+                + " - Pontos: " + registro.getPontos() + " - Libertadores: " + registro.isLibertadores()));
 
 
         //Utilizando stream
         tabelaBrasileiraoA = TimeUtils.gerarRegistros();
 
+        //O objetivo das streams é manipular os valores sem precisar coletalos para uma lista,
+        // por isso o mais eficiente nesse caso é utilizar o limit depois de ordenar.
         tabelaBrasileiraoA.stream()
                 .sorted(Comparator.comparingInt(Registro::getPontos).reversed())
-                .collect(Collectors.toList())
-                .subList(0,8)
+                .limit(8)
                 .forEach(registro -> registro.setLibertadores(true));
 
         System.out.println("--- impressão tabela com stream  -----");
-        tabelaBrasileiraoA.forEach(registro -> System.out.println("Time: "+registro.getTime()
-                + " - Pontos: "+registro.getPontos()+" - Libertadores: "+registro.isLibertadores()));
+        tabelaBrasileiraoA.forEach(registro -> System.out.println("Time: " + registro.getTime()
+                + " - Pontos: " + registro.getPontos() + " - Libertadores: " + registro.isLibertadores()));
 
     }
 }
