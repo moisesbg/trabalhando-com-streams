@@ -41,7 +41,7 @@ Exemplo:
 
 > List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();
 >
- tabelaBrasileiraoA.stream()
+ > tabelaBrasileiraoA.stream()
  		.filter(registro -> registro.getPontos() >= 57)
 		
 Mas como o que o filter recebe?
@@ -76,7 +76,7 @@ Exemplo:
 
 >List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();
 >
-tabelaBrasileiraoA.stream()
+> tabelaBrasileiraoA.stream()
 		.map(Registro::getTime)
 		.collect(Collectors.toList())
 		.forEach(System.out::println);
@@ -90,7 +90,7 @@ Exemplo:
 
 > List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();
 >
-Double media = tabelaBrasileiraoA.stream()
+> Double media = tabelaBrasileiraoA.stream()
 		.mapToInt(Registro::getPontos)
 		.average()
 		.getAsDouble();
@@ -100,7 +100,7 @@ No exemplo acima, tem-se a média de pontos dos times do campeonato brasileiro. 
 Porém, a IDE nos avisa que há algo "estranho". Ocorre que por retornar um Optional&lsaquo;Double&rsaquo; o valor pode não existir, ou seja, ser nulo. Ao tentar converter algo nulo para Double ocorrerá um NullPointerException.
 
 Para tratar esta situação, podemos fazer a seguinte alteração:
-Double media = tabelaBrasileiraoA.stream()
+> Double media = tabelaBrasileiraoA.stream()
 		.mapToInt(Registro::getPontos)
 		.average()
 		.orElse(0);
@@ -112,21 +112,21 @@ Outra forma de fazer operações de agregação é a utilização do método red
 Exemplo:
 
 >List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();
-int valorInicial = 0;
-vitorias = tabelaBrasileiraoA.stream()
+> int valorInicial = 0;
+> vitorias = tabelaBrasileiraoA.stream()
 		.map(Registro::getVitorias)
 		.reduce(valorInicial, (a, b) -> a + b);
 >
-vitorias = tabelaBrasileiraoA.stream()
+> vitorias = tabelaBrasileiraoA.stream()
 		.map(Registro::getVitorias)
 		.reduce(valorInicial, Integer::sum);
 >
-String nomes = tabelaBrasileiraoA.stream()
+> String nomes = tabelaBrasileiraoA.stream()
 	.map(registro -> registro.getTime()+"  ")
 	.reduce(String::concat)
 	.orElse("");
 >
-System.out.println(nomes);
+> System.out.println(nomes);
 
 Nos exemplos acima, os dois primeiros fazem exatamente a mesma coisa, apenas o tratamento no reduce é diferente, mas o sentido é o mesmo. No terceiro exemplo, faz-se a concatenação dos nomes dos times que participaram do Brasileirão 2017.
 
@@ -134,7 +134,7 @@ Nos exemplos acima, os dois primeiros fazem exatamente a mesma coisa, apenas o t
 No exemplo abaixo, temos uma forma mais resumida de imprimir os nomes dos times que participaram do Brasileirão 2017. Como o método reduce retorna um Optional, faz-se o uso do método ifPresent (disponível na classe Optional) para verificar se o Optional retornou algum dado. Na lambda do ifPresent, é passado o que deve ser feito com esse dado caso ele exista. No caso do exemplo, deve-se imprimir na saída padrão.
 Exemplo:
 > System.out.println("----- Outra forma de imprimir os nomes ---------");
-tabelaBrasileiraoA.stream()
+> tabelaBrasileiraoA.stream()
 		.map(registro -> registro.getTime()+"  ")
 		.reduce(String::concat)
 		.ifPresent(System.out::println);
@@ -153,11 +153,11 @@ Exemplo:
 		tabelaBrasileiraoA.stream()
 				.anyMatch(registro -> "Tubarão".equals(registro.getTime())));
 >
-System.out.println("Não existe o Tubarão no brasileirão? " +
+> System.out.println("Não existe o Tubarão no brasileirão? " +
 		tabelaBrasileiraoA.stream()
 				.noneMatch(registro -> "Tubarão".equals(registro.getTime())));
 >
-System.out.println("Todos os times ganharam aos menos uma partida no brasileirão? "+
+> System.out.println("Todos os times ganharam aos menos uma partida no brasileirão? "+
 		tabelaBrasileiraoA.stream().allMatch(registro -> registro.getVitorias() > 0));	
 
 		
