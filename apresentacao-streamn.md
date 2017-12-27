@@ -16,12 +16,13 @@ Obs.: uma interface que possui um só método a ser implementado, é chamada de 
 
 ##### Antes e depois da lambda, um exemplo:
 >// Como era iterar a lista no Java 7 
-for (Cliente cliente: clientes) {
-	System.out.println("Nome: "+cliente.getNome()+" - Pontos: "+cliente.getPontos());
+for (Cliente cliente: clientes) { </br>
+	System.out.println("Nome: "+cliente.getNome()+" - Pontos: "+cliente.getPontos()); </br>
 }
 
 >// Como é iterar a lista com lambda 
-clientes.forEach(cliente -> System.out.println(cliente.getNome()+" - Pontos: "+cliente.getPontos()));
+clientes</br>
+.forEach(cliente -> System.out.println(cliente.getNome()+" - Pontos: "+cliente.getPontos()));
 
 O forEach está imprimindo o nome e a quantidade de pontos do cliente, mas de onde vem isso? Qual argumento o forEach recebe?
 Ele recebe um java.util.function.Consumer , que tem um único método, o accept. 
@@ -41,7 +42,7 @@ Exemplo:
 
 > List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();
 >
- > tabelaBrasileiraoA.stream()
+ > tabelaBrasileiraoA.stream() </br>
  		.filter(registro -> registro.getPontos() >= 57)
 		
 Mas como o que o filter recebe?
@@ -53,19 +54,19 @@ O retorno será um stream "tipado" com o tipo da coleção contendo os registros
 #### Iterando sobre o stream
 Tomando o exemplo acima por base, querendo-se imprimir a lista dos registros com 57 pontos ou mais, deve-se fazer o seguinte incremento no código que manipula o stream:
 
-> tabelaBrasileiraoA.stream()
-		.filter(registro -> registro.getPontos() >= 57)
+> tabelaBrasileiraoA.stream() </br>
+		.filter(registro -> registro.getPontos() >= 57) </br>
 		.forEach(registro -> System.out.println("Time: "+registro.getTime()+ " - Pontos: "+registro.getPontos()));
 
 #### Criando sub-listas e alterando o valor dos objetos da lista
 O filtro em uma lista nos permite criar sub-listas. Esta sub-lista pode ser iterada normalmente, permitindo assim, que os atributos de cada objeto da lista sejam manipulados.
 Exemplo:
 
-> tabelaBrasileiraoA.stream()
-		.sorted(Comparator.comparingInt(Registro::getPontos).reversed()) //ordena por pontos em ordem decrescente
-		.collect(Collectors.toList()) //transforma o stream novamente em lista
-		.subList(0,8) //cria uma sub-lista
-		.forEach(registro -> registro.setLibertadores(true)); //atribui true ao atributo "libertadores" do registro
+> tabelaBrasileiraoA.stream() </br>
+		.sorted(Comparator.comparingInt(Registro::getPontos).reversed()) //ordena por pontos em ordem decrescente </br>
+		.collect(Collectors.toList()) //transforma o stream novamente em lista </br>
+		.subList(0,8) //cria uma sub-lista </br>
+		.forEach(registro -> registro.setLibertadores(true)); //atribui true ao atributo "libertadores" do registro </br>
 		
 Isto poderia ser feito diretamente na lista sem o uso do stream, porém com uma diferença. Sem o uso do stream, ao ordenarmos a lista estaria-se ordenando a lista original e portanto alterando uma estrutura que talvez não se queira alterar. No exemplo acima, a única coisa realmente alterada na lista, é o atributo libertadores para os oito times com maior pontuação (independente de onde eles se encontram na lista).
 
@@ -74,12 +75,12 @@ Isto poderia ser feito diretamente na lista sem o uso do stream, porém com uma 
 Um dos métodos que a API stream oferece é o MAP. Cobinado as coleções, o map pega um elemento da coleção e permite que se possa manipular esse elemento ou seus atributos, passando para o próximo passo da execução, um tipo diferente dos itens da lista.
 Exemplo:
 
->List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();
+>List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();  </br>
 >
-> tabelaBrasileiraoA.stream()
-		.map(Registro::getTime)
-		.collect(Collectors.toList())
-		.forEach(System.out::println);
+> tabelaBrasileiraoA.stream()  </br>
+		.map(Registro::getTime) </br>
+		.collect(Collectors.toList()) </br>
+		.forEach(System.out::println); </br>
 
 Analisando o exemplo, tabelaBrasileiraoA é uma lista de objetos da classe Registro. Através do método map, consegue-se retornar apenas o atributo (que é do tipo String) de cada um dos elementos da lista. O método collect(Collectors.toList()), trasforma estas String em uma lista de String. Por fim, percorre-se a lista, imprimindo o seu conteúdo.
 **Observação: ** o _".forEach(System.out::println)"_ é a mesma coisa que _".forEach(nomeTime -> Sistem.out.println(nomeTime))"_. Aqui é feito o uso de **method reference**. A JVM interpreta que no forEach irão passar os elementos da lista de String, logo a cada iteração ter-se-á uma string (nome do time) no loop. Como o método System.out.println recebe um único argumento, a JVM interpreta que a string que está no loop no momento deve ser passada como parâmetro para o método System.out.println.
@@ -88,22 +89,22 @@ Analisando o exemplo, tabelaBrasileiraoA é uma lista de objetos da classe Regis
 Com o uso do map, pode-se pegar atributos numéricos de um objeto e processá-lo em funções de agregação tais como adição, subtração, divisão, multiplicação. 
 Exemplo:
 
-> List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();
+> List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros(); </br>
 >
-> Double media = tabelaBrasileiraoA.stream()
-		.mapToInt(Registro::getPontos)
-		.average()
-		.getAsDouble();
+> Double media = tabelaBrasileiraoA.stream() </br>
+		.mapToInt(Registro::getPontos) </br>
+		.average() </br>
+		.getAsDouble(); </br>
 		
 No exemplo acima, tem-se a média de pontos dos times do campeonato brasileiro. Através do método mapToInt, pegou-se cada elemento da lista de registro e extraiu-se o número de pontos e cada um dos elementos. Ao invorcar o método average(), obteve-se a média destes pontos. Como o retorno é um Optional<Double>, utiliza-se o método getAsDouble() para convertê-lo num double.
 
 Porém, a IDE nos avisa que há algo "estranho". Ocorre que por retornar um Optional&lsaquo;Double&rsaquo; o valor pode não existir, ou seja, ser nulo. Ao tentar converter algo nulo para Double ocorrerá um NullPointerException.
 
 Para tratar esta situação, podemos fazer a seguinte alteração:
-> Double media = tabelaBrasileiraoA.stream()
-		.mapToInt(Registro::getPontos)
-		.average()
-		.orElse(0);
+> Double media = tabelaBrasileiraoA.stream() </br>
+		.mapToInt(Registro::getPontos) </br>
+		.average() </br>
+		.orElse(0); </br>
 
 Neste caso, se algo fizer com que a operação torne-se nula, o retorno será zero.
 
@@ -111,33 +112,33 @@ Neste caso, se algo fizer com que a operação torne-se nula, o retorno será ze
 Outra forma de fazer operações de agregação é a utilização do método reduce. Através deste método pode-se fazer agreção com números e também com String.
 Exemplo:
 
->List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();
-> int valorInicial = 0;
-> vitorias = tabelaBrasileiraoA.stream()
-		.map(Registro::getVitorias)
-		.reduce(valorInicial, (a, b) -> a + b);
+>List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros(); </br>
+> int valorInicial = 0; </br>
+> vitorias = tabelaBrasileiraoA.stream() </br>
+		.map(Registro::getVitorias) </br>
+		.reduce(valorInicial, (a, b) -> a + b); </br>
 >
-> vitorias = tabelaBrasileiraoA.stream()
-		.map(Registro::getVitorias)
-		.reduce(valorInicial, Integer::sum);
+> vitorias = tabelaBrasileiraoA.stream() </br>
+		.map(Registro::getVitorias) </br>
+		.reduce(valorInicial, Integer::sum); </br>
 >
-> String nomes = tabelaBrasileiraoA.stream()
-	.map(registro -> registro.getTime()+"  ")
-	.reduce(String::concat)
-	.orElse("");
+> String nomes = tabelaBrasileiraoA.stream() </br>
+	.map(registro -> registro.getTime()+"  ") </br>
+	.reduce(String::concat) </br>
+	.orElse(""); </br>
 >
-> System.out.println(nomes);
+> System.out.println(nomes); </br>
 
 Nos exemplos acima, os dois primeiros fazem exatamente a mesma coisa, apenas o tratamento no reduce é diferente, mas o sentido é o mesmo. No terceiro exemplo, faz-se a concatenação dos nomes dos times que participaram do Brasileirão 2017.
 
 #### Utilizando o ifPresent para verificar se um Optional retornou valor
 No exemplo abaixo, temos uma forma mais resumida de imprimir os nomes dos times que participaram do Brasileirão 2017. Como o método reduce retorna um Optional, faz-se o uso do método ifPresent (disponível na classe Optional) para verificar se o Optional retornou algum dado. Na lambda do ifPresent, é passado o que deve ser feito com esse dado caso ele exista. No caso do exemplo, deve-se imprimir na saída padrão.
 Exemplo:
-> System.out.println("----- Outra forma de imprimir os nomes ---------");
-> tabelaBrasileiraoA.stream()
-		.map(registro -> registro.getTime()+"  ")
-		.reduce(String::concat)
-		.ifPresent(System.out::println);
+> System.out.println("----- Outra forma de imprimir os nomes ---------"); </br>
+> tabelaBrasileiraoA.stream() </br>
+		.map(registro -> registro.getTime()+"  ") </br>
+		.reduce(String::concat) </br>
+		.ifPresent(System.out::println); </br>
 
 				
 #### Testando predicados
@@ -149,16 +150,16 @@ Há casos em que não é necessário filtrar os dados, mas precisa testar condi�
 
 Exemplo:
 
-> System.out.println("Existe o Tubarão no brasileirão? " +
-		tabelaBrasileiraoA.stream()
-				.anyMatch(registro -> "Tubarão".equals(registro.getTime())));
+> System.out.println("Existe o Tubarão no brasileirão? " + </br>
+		tabelaBrasileiraoA.stream() </br>
+				.anyMatch(registro -> "Tubarão".equals(registro.getTime()))); </br>
 >
-> System.out.println("Não existe o Tubarão no brasileirão? " +
-		tabelaBrasileiraoA.stream()
-				.noneMatch(registro -> "Tubarão".equals(registro.getTime())));
+> System.out.println("Não existe o Tubarão no brasileirão? " + </br>
+		tabelaBrasileiraoA.stream() </br>
+				.noneMatch(registro -> "Tubarão".equals(registro.getTime()))); </br>
 >
-> System.out.println("Todos os times ganharam aos menos uma partida no brasileirão? "+
-		tabelaBrasileiraoA.stream().allMatch(registro -> registro.getVitorias() > 0));	
+> System.out.println("Todos os times ganharam aos menos uma partida no brasileirão? "+ </br>
+		tabelaBrasileiraoA.stream().allMatch(registro -> registro.getVitorias() > 0)); </br>
 
 		
 #### Tópicos que não foram abordados
