@@ -8,6 +8,7 @@ public class CalcularMediaPontosBrasileirao {
     public static void main(String[] args) {
         List<Registro> tabelaBrasileiraoA = TimeUtils.gerarRegistros();
 
+        //Cuidado ao acessar um valor "Optional" sem verificar se ele está presente
         Double media = tabelaBrasileiraoA.stream()
                 .mapToInt(Registro::getPontos)
                 .average()

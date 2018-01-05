@@ -11,20 +11,19 @@ public class SomarVitoriasBrasileirao {
                 .mapToInt(Registro::getVitorias)
                 .sum();
 
-        System.out.println("Total de vitórias: "+vitorias);
-
-        int valorInicial = 0;
-        vitorias = tabelaBrasileiraoA.stream()
-                .map(Registro::getVitorias)
-                .reduce(valorInicial, (a, b) -> a + b);
-
-        System.out.println("Total de vitorias: "+vitorias);
+        System.out.println("Total de vitórias: " + vitorias);
 
         vitorias = tabelaBrasileiraoA.stream()
                 .map(Registro::getVitorias)
-                .reduce(valorInicial, Integer::sum);
+                .reduce(0, (a, b) -> a + b);
 
-        System.out.println("Total de vitorias: "+vitorias);
+        System.out.println("Total de vitorias: " + vitorias);
+
+        vitorias = tabelaBrasileiraoA.stream()
+                .map(Registro::getVitorias)
+                .reduce(0, Integer::sum);
+
+        System.out.println("Total de vitorias: " + vitorias);
 
     }
 }
